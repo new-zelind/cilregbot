@@ -9,7 +9,7 @@ import { token, developmentGuild } from "~secret/discord.json";
 import log from "./lib/log";
 
 // Register all of the commands
-import "./command";
+import "./commands";
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS],
