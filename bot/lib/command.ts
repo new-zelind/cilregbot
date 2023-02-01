@@ -5,6 +5,9 @@ import {
   CommandInteraction,
   Interaction,
   Message,
+  Caches,
+  GuildMemberRoleManager,
+  Role,
 } from "discord.js";
 import { token, clientID } from "~secret/discord.json";
 import { Routes } from "discord-api-types/v9";
@@ -171,4 +174,10 @@ export const Permissions = {
       const all = await Promise.all(permissions.map((p) => p(interaction)));
       return all.some((p) => p);
     },
+
+  staff: () => async (interaction: CommandInteraction<CacheType>) => {
+    const allRoles = (interaction.member?.roles as GuildMemberRoleManager)
+      .cache;
+    return allRoles.some((r) => r.name === "CiL Staff");
+  },
 };
