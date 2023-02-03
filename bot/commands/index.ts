@@ -5,3 +5,4 @@ import "./lock";
 import "./unlock";
 import "./machine";
 import "./uptime";
+import "./register";

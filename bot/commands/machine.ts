@@ -1,6 +1,7 @@
 import Command, { Permissions } from "~lib/command";
 import * as os from "os";
 import { toCode } from "~lib/utils";
+import { owner } from "~secret/discord.json";
 
 const MachineCommand = Command({
   names: ["machine"],
@@ -9,7 +10,7 @@ const MachineCommand = Command({
     description: "Lists the machine the bot is running on.",
   },
 
-  check: Permissions.user("286283133337206784"),
+  check: Permissions.user(owner),
 
   async fail(interaction) {
     return await interaction.reply({

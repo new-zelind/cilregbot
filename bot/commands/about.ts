@@ -18,10 +18,8 @@ const AboutCommand = Command({
   },
 
   async exec(interaction) {
-    const color = Number("0x3A4958");
-
     const embed = new EmbedBuilder()
-      .setColor(color)
+      .setColor(0x3a4958)
       .setTitle(`All about me!`)
       .setDescription("Nice to meet you.")
       .addFields(

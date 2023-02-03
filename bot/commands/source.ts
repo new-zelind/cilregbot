@@ -1,4 +1,5 @@
 import Command, { Permissions } from "~lib/command";
+import { owner } from "~secret/discord.json";
 
 const SourceCommand = Command({
   names: ["source"],
@@ -7,7 +8,7 @@ const SourceCommand = Command({
     description: "Get the link to the bot's source repository.",
   },
 
-  check: Permissions.channel("743186043179892856"),
+  check: Permissions.channel(owner),
 
   async fail(interaction) {
     return await interaction.reply({
