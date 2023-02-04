@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "@discordjs/builders";
-import Command, { Permissions } from "~lib/command";
+import Command, { Permissions } from "lib/command";
 
 const AboutCommand = Command({
   names: ["about"],

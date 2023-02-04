@@ -1,7 +1,6 @@
-import Command, { Permissions } from "~lib/command";
+import Command, { Permissions } from "lib/command";
 import * as os from "os";
-import { toCode } from "~lib/utils";
-import { owner } from "~secret/discord.json";
+import { owner } from "secret/discord.json";
 
 const MachineCommand = Command({
   names: ["machine"],
@@ -26,7 +25,7 @@ const MachineCommand = Command({
     const arch: string = os.arch();
 
     return await interaction.reply({
-      content: toCode(`${username}@${machine}: ${type} ${arch}`),
+      content: `\`\`\`${username}@${machine}: ${type} ${arch}\`\`\``,
       ephemeral: true,
     });
   },

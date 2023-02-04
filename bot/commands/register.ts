@@ -1,10 +1,9 @@
 import {
-  ActionRowBuilder,
-  ModalActionRowComponentBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-} from "@discordjs/builders";
-import { TextInputStyle } from "discord-api-types/v9";
+  MessageActionRow,
+  Modal,
+  ModalActionRowComponent,
+  TextInputComponent,
+} from "discord.js";
 import Command, { Permissions } from "lib/command";
 
 const RegisterCommand = Command({
@@ -24,49 +23,45 @@ const RegisterCommand = Command({
   },
 
   async exec(interaction) {
-    await interaction.deferReply();
+    //await interaction.deferReply();
 
-    const modal = new ModalBuilder()
+    const modal = new Modal()
       .setCustomId("registrationModal")
-      .setTitle("CiL Driver Registration");
+      .setTitle("CiL Driver Application");
 
-    const nameInput = new TextInputBuilder()
+    const nameInput = new TextInputComponent()
       .setCustomId("displayNameInput")
-      .setLabel("What is your name?")
-      .setStyle(TextInputStyle.Short);
+      .setLabel("Name (First & Last):")
+      .setStyle("SHORT")
+      .setRequired(true);
     const nameActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-        nameInput
-      );
+      new MessageActionRow<ModalActionRowComponent>().addComponents(nameInput);
 
-    const iracingNameInput = new TextInputBuilder()
+    const iracingNameInput = new TextInputComponent()
       .setCustomId("iracingNameInput")
-      .setLabel("Enter your name exactly as it appears in iRacing:")
-      .setStyle(TextInputStyle.Short);
+      .setLabel("Your name exactly as it appears in iRacing:")
+      .setStyle("SHORT")
+      .setRequired(true);
     const irNameActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+      new MessageActionRow<ModalActionRowComponent>().addComponents(
         iracingNameInput
       );
 
-    const iracingIdInput = new TextInputBuilder()
+    const iracingIdInput = new TextInputComponent()
       .setCustomId("iracingIdInput")
-      .setLabel(
-        "What is your iRacing customer ID? (Tip: look in the upper right corner of the iRacing Account section on the membersite)"
-      )
-      .setStyle(TextInputStyle.Short);
+      .setLabel("iRacing Customer ID:")
+      .setStyle("SHORT");
     const idActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+      new MessageActionRow<ModalActionRowComponent>().addComponents(
         iracingIdInput
       );
 
-    const schoolInput = new TextInputBuilder()
+    const schoolInput = new TextInputComponent()
       .setCustomId("schoolInput")
-      .setLabel(
-        "What school are you representing? (Full name, please, e.g. University of Texas at Arlington)"
-      )
-      .setStyle(TextInputStyle.Short);
+      .setLabel("Full School Name:")
+      .setStyle("SHORT");
     const schoolActionRow =
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+      new MessageActionRow<ModalActionRowComponent>().addComponents(
         schoolInput
       );
 

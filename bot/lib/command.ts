@@ -9,7 +9,7 @@ import {
   GuildMemberRoleManager,
   Role,
 } from "discord.js";
-import { token, clientID } from "~secret/discord.json";
+import { token, clientID } from "secret/discord.json";
 import { Routes } from "discord-api-types/v9";
 
 export type CommandResult = Promise<Message | Message[] | void> | void;

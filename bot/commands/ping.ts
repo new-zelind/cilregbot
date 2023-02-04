@@ -1,4 +1,4 @@
-import Command, { Permissions } from "~lib/command";
+import Command, { Permissions } from "lib/command";
 
 const PingCommand = Command({
   names: ["ping"],

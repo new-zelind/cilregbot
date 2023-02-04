@@ -1,5 +1,5 @@
-import Command, { Permissions } from "~lib/command";
-import { owner } from "~secret/discord.json";
+import Command, { Permissions } from "lib/command";
+import { owner } from "secret/discord.json";
 
 const SourceCommand = Command({
   names: ["source"],

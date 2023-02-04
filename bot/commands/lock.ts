@@ -1,5 +1,5 @@
 import { Role, RoleManager, TextChannel } from "discord.js";
-import Command, { Permissions } from "~lib/command";
+import Command, { Permissions } from "lib/command";
 
 const LockCommand = Command({
   names: ["lock"],

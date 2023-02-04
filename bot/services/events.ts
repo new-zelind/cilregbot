@@ -13,8 +13,7 @@ import {
   TextChannel,
   User,
 } from "discord.js";
-import { toCode } from "../lib/utils";
-import { client } from "../client";
+import { client } from "client";
 
 export async function handleBanAdd(ban: GuildBan): Promise<Message | boolean> {
   const adminLog = ban.guild.channels.cache.find(
@@ -332,7 +331,7 @@ export async function handleMessage(
   toSend += `${message.createdAt.toLocaleString()}`;
   serverLog.send(toSend);
 
-  msgList.forEach((str: string) => serverLog.send(toCode(str)));
+  msgList.forEach((str: string) => serverLog.send(`\`\`\`${str}\`\`\``));
 
   //log attachments, if necessary
   if (message.attachments.size > 0) {

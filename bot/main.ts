@@ -3,7 +3,7 @@ import {
   deployApplicationCommands,
   deployGuildCommands,
   handleCommand,
-} from "~lib/command";
+} from "lib/command";
 import {
   handleBanAdd,
   handleBanRemove,
@@ -23,13 +23,13 @@ import {
   PartialUser,
   User,
 } from "discord.js";
-import { developmentGuild } from "~secret/discord.json";
+import { developmentGuild } from "secret/discord.json";
 import { client } from "./client";
 import log from "./lib/log";
 
 // Register all of the commands
 import "./commands";
-import report from "~lib/report";
+import report from "lib/report";
 
 const statuses: string[] = [
   "Drew throw",
@@ -129,7 +129,9 @@ client.on(
   ) => {}
 );
 
+/*
 // error reporting
 const reporter = report(client);
 process.on("uncaughtException", (error: Error) => reporter(error));
 process.on("unhandledRejection", (error: Error) => reporter(error));
+*/
