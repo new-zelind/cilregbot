@@ -81,7 +81,7 @@ client.on("interactionCreate", handleCommand);
 
 // message logging
 client.on("messageCreate", (message: Message) => {
-  console.log("message create");
+  console.log(`${message.cleanContent}`);
   handleMessage(message);
 });
 

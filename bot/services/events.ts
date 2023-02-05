@@ -211,86 +211,6 @@ export async function handleMessageDelete(
   return true;
 }
 
-function matchAll(str: string, re: RegExp) {
-  return (str.match(re) || [])
-    .map((i) => RegExp(re.source, re.flags).exec(i))
-    .filter((j) => j !== null);
-}
-
-async function cleanup(message: Message): Promise<string> {
-  let content: string = message.content;
-
-  // clean up the bullshit in role mentions
-  const roles: {
-    key: string;
-    role: Role | undefined;
-  }[] = await Promise.all(
-    matchAll(content, /<@#&([0-9]+)>/g).map(async (match) => ({
-      key: (match as RegExpExecArray)[0],
-      role: (message.guild as Guild).roles.cache.get(
-        (match as RegExpExecArray)[1]
-      ),
-    }))
-  );
-
-  //clean up the bullshit in member mentions
-  const members: {
-    key: string;
-    member: GuildMember | undefined;
-  }[] = await Promise.all(
-    matchAll(content, /<@#&([0-9]+)>/g).map(async (match) => ({
-      key: (match as RegExpExecArray)[0],
-      member: (message.guild as Guild).members.cache.get(
-        (match as RegExpExecArray)[1]
-      ),
-    }))
-  );
-
-  //clean up the bullshit in channel mentions
-  const channels: {
-    key: string;
-    channel: Channel | undefined;
-  }[] = await Promise.all(
-    matchAll(content, /<@#&([0-9]+)>/g).map(async (match) => ({
-      key: (match as RegExpExecArray)[0],
-      channel: (message.guild as Guild).channels.cache.get(
-        (match as RegExpExecArray)[1]
-      ),
-    }))
-  );
-
-  //clean up the bullshit in emojis
-  const emoji: {
-    key: string;
-    emoji: Emoji | undefined;
-  }[] = await Promise.all(
-    matchAll(content, /<@#&([0-9]+)>/g).map(async (match) => ({
-      key: (match as RegExpExecArray)[0],
-      emoji: (message.guild as Guild).emojis.cache.get(
-        (match as RegExpExecArray)[1]
-      ),
-    }))
-  );
-
-  roles.forEach(
-    ({ key, role }) => (content = content.replace(key, `@[${role?.name}]`))
-  );
-
-  members.forEach(
-    ({ key, member }) =>
-      (content = content.replace(key, `@[${member?.nickname}]`))
-  );
-  emoji.forEach(
-    ({ key, emoji }) => (content = content.replace(key, `\:[${emoji?.name}]:`))
-  );
-  channels.forEach(
-    ({ key, channel }) =>
-      (content = content.replace(key, `#[${channel?.toString()}]`))
-  );
-
-  return content;
-}
-
 async function splitMessagesLogically(message: string): Promise<string[]> {
   let messages: string[] = [];
   let msgIndex: number = 0;
@@ -323,11 +243,12 @@ export async function handleMessage(
   ) as TextChannel;
   if (!serverLog) return false;
 
-  let fullContent: string = await cleanup(message);
-  let msgList: string[] = await splitMessagesLogically(fullContent);
+  let msgList: string[] = await splitMessagesLogically(
+    message.cleanContent.replace("`", "")
+  );
   let toSend: string = "";
   toSend += `[${message.author.username}#${message.author.discriminator}]`;
-  toSend += ` in ${message.channel.name} at `;
+  toSend += ` in \`${message.channel.name}\` at `;
   toSend += `${message.createdAt.toLocaleString()}`;
   serverLog.send(toSend);
 
