@@ -1,4 +1,3 @@
-import { EmbedBuilder } from "@discordjs/builders";
 import {
   Channel,
   Emoji,
@@ -7,6 +6,7 @@ import {
   GuildBan,
   GuildMember,
   Message,
+  MessageEmbed,
   PartialGuildMember,
   PartialMessage,
   Role,
@@ -17,7 +17,7 @@ import { client } from "client";
 
 export async function handleBanAdd(ban: GuildBan): Promise<Message | boolean> {
   const adminLog = ban.guild.channels.cache.find(
-    (c) => c.name === "event-log"
+    (c) => c.name === "admin-log"
   ) as TextChannel;
 
   if (!adminLog) return false;
@@ -30,11 +30,11 @@ export async function handleBanAdd(ban: GuildBan): Promise<Message | boolean> {
 
   let timestamp: Date = new Date();
 
-  const embed: EmbedBuilder = new EmbedBuilder()
-    .setColor(0xc8102e)
+  const embed: MessageEmbed = new MessageEmbed()
+    .setColor(0xd22730)
     .setTitle("NEW BAN ADDED")
     .setDescription("Member banned from server")
-    .setImage(ban.user.avatarURL())
+    .setImage(ban.user.avatarURL() || "")
     .addFields(
       { name: "User ID", value: ban.user.id },
       { name: "Username", value: ban.user.username, inline: true },
@@ -43,17 +43,21 @@ export async function handleBanAdd(ban: GuildBan): Promise<Message | boolean> {
       {
         name: "Executor",
         value: `${entry.executor?.username}#${entry.executor?.discriminator}`,
+      },
+      {
+        name: "Reason",
+        value: `${entry.reason}`,
       }
     );
 
-  return await adminLog.send({ embeds: [embed.data] });
+  return await adminLog.send({ embeds: [embed] });
 }
 
 export async function handleBanRemove(
   ban: GuildBan
 ): Promise<Message | boolean> {
   const adminLog = ban.guild.channels.cache.find(
-    (c) => c.name === "event-log"
+    (c) => c.name === "admin-log"
   ) as TextChannel;
   if (!adminLog) return false;
 
@@ -65,11 +69,11 @@ export async function handleBanRemove(
 
   let timestamp: Date = new Date();
 
-  const embed: EmbedBuilder = new EmbedBuilder()
-    .setColor(0x00b2a9)
+  const embed: MessageEmbed = new MessageEmbed()
+    .setColor(0x44d62c)
     .setTitle("BAN REMOVED")
     .setDescription("Server ban revoked")
-    .setImage(ban.user.avatarURL())
+    .setImage(ban.user.avatarURL() || "")
     .addFields(
       { name: "User ID", value: ban.user.id },
       { name: "Username", value: ban.user.username, inline: true },
@@ -81,24 +85,24 @@ export async function handleBanRemove(
       }
     );
 
-  return await adminLog.send({ embeds: [embed.data] });
+  return await adminLog.send({ embeds: [embed] });
 }
 
 export async function handleLeave(
   member: GuildMember | PartialGuildMember
 ): Promise<Message | boolean> {
   const adminLog = member.guild.channels.cache.find(
-    (c) => c.name === "event-log"
+    (c) => c.name === "admin-log"
   ) as TextChannel;
   if (!adminLog) return false;
 
   let timestamp: Date = new Date();
 
-  const embed: EmbedBuilder = new EmbedBuilder()
-    .setColor(0xf6eb61)
+  const embed: MessageEmbed = new MessageEmbed()
+    .setColor(0xe0e722)
     .setTitle("MEMBER LEAVE")
     .setDescription("Member kicked or left server voluntarily")
-    .setImage(member.user.avatarURL())
+    .setImage(member.user.avatarURL() || "")
     .addFields(
       { name: "User ID", value: member.user.id },
       { name: "Username", value: member.user.username, inline: true },
@@ -106,7 +110,7 @@ export async function handleLeave(
       { name: "Timestamp", value: timestamp.toLocaleTimeString() }
     );
 
-  return await adminLog.send({ embeds: [embed.data] });
+  return await adminLog.send({ embeds: [embed] });
 }
 
 export async function handleMessageUpdate(
@@ -129,19 +133,19 @@ export async function handleMessageUpdate(
   serverLog.send(
     `[${old.author.username}#${
       old.author.discriminator
-    }] in ${old.channel.toString()}: ${old.content.toString()} => ${current.content.toString()}`
+    }] in ${old.channel.toString()}: \`\`\`${old.content.toString()}\`\`\` => \`\`\`${current.content.toString()}\`\`\``
   );
 
   const author: User = old.author;
   const timestamp: Date = new Date();
 
   const adminLog = old.guild?.channels.cache.find(
-    (channel) => channel.name === "event-log"
+    (channel) => channel.name === "admin-log"
   ) as TextChannel;
   if (!adminLog) return false;
 
-  const embed: EmbedBuilder = new EmbedBuilder()
-    .setColor(0x3c1361)
+  const embed: MessageEmbed = new MessageEmbed()
+    .setColor(0xc724b1)
     .setTitle("MESSAGE EDITED")
     .addFields(
       { name: "Username", value: author.username, inline: true },
@@ -156,19 +160,19 @@ export async function handleMessageUpdate(
         inline: true,
       },
       { name: "In Channel", value: old.channel.name, inline: true },
-      { name: "Old Text:", value: "Text: " + old.content },
-      { name: "New Text:", value: "Text: " + current.content },
+      { name: "Old Text:", value: `${old.cleanContent}` },
+      { name: "New Text:", value: `${current.cleanContent}` },
       { name: "Link", value: current.url }
     );
 
-  return await adminLog.send({ embeds: [embed.data] });
+  return await adminLog.send({ embeds: [embed] });
 }
 
 export async function handleMessageDelete(
   message: Message | PartialMessage
 ): Promise<Message | boolean> {
   const adminLog = message.guild?.channels.cache.find(
-    (channel) => channel.name === "event-log"
+    (channel) => channel.name === "admin-log"
   ) as TextChannel;
   if (!adminLog) return false;
 
@@ -177,8 +181,8 @@ export async function handleMessageDelete(
 
   if (author.id === client.user?.id) return false;
 
-  const embed: EmbedBuilder = new EmbedBuilder()
-    .setColor(0x034694)
+  const embed: MessageEmbed = new MessageEmbed()
+    .setColor(0x4d4dff)
     .setTitle("MESSAGE DELETED")
     .addFields(
       { name: "Username", value: author.user.username, inline: true },
@@ -193,11 +197,11 @@ export async function handleMessageDelete(
         inline: true,
       },
       { name: "In Channel", value: (message.channel as TextChannel).name },
-      { name: "Message Text:", value: "Text: " + message.content },
+      { name: "Message Text:", value: `${message.cleanContent}` },
       { name: "Link (in case of TOS violation)", value: message.url }
     );
 
-  adminLog.send({ embeds: [embed.data] });
+  adminLog.send({ embeds: [embed] });
 
   if (message.attachments.size > 0) {
     adminLog.send("ATTACHMENTS:");

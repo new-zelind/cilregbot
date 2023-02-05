@@ -23,7 +23,7 @@ import {
   PartialUser,
   User,
 } from "discord.js";
-import { developmentGuild } from "secret/discord.json";
+import { developmentGuild } from "~secret/discord.json";
 import { client } from "./client";
 import log from "./lib/log";
 
@@ -81,34 +81,25 @@ client.on("interactionCreate", handleCommand);
 
 // message logging
 client.on("messageCreate", (message: Message) => {
-  console.log(`${message.cleanContent}`);
   handleMessage(message);
 });
 
 // audit log watchdogs
-client.on("guildMemberAdd", (member: GuildMember) => {
-  console.log("guild member add");
-});
 client.on("guildMemberRemove", (member: GuildMember | PartialGuildMember) => {
-  console.log("guild member remove");
   handleLeave(member);
 });
 client.on("guildBanAdd", (ban: GuildBan) => {
-  console.log("guild ban add");
   handleBanAdd(ban);
 });
 client.on("guildBanRemove", (ban: GuildBan) => {
-  console.log("guild ban remove");
   handleBanRemove(ban);
 });
 client.on("messageDelete", (message: Message | PartialMessage) => {
-  console.log("message delete");
   handleMessageDelete(message);
 });
 client.on(
   "messageUpdate",
   async (old: Message | PartialMessage, current: Message | PartialMessage) => {
-    console.log("message update");
     handleMessageUpdate(old, current);
   }
 );
@@ -129,9 +120,7 @@ client.on(
   ) => {}
 );
 
-/*
 // error reporting
 const reporter = report(client);
 process.on("uncaughtException", (error: Error) => reporter(error));
 process.on("unhandledRejection", (error: Error) => reporter(error));
-*/

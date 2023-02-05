@@ -1,6 +1,6 @@
 import Command, { Permissions } from "lib/command";
 import * as os from "os";
-import { owner } from "secret/discord.json";
+import { owner } from "~secret/discord.json";
 
 const MachineCommand = Command({
   names: ["machine"],

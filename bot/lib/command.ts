@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import {
   CacheType,
@@ -9,8 +8,9 @@ import {
   GuildMemberRoleManager,
   Role,
 } from "discord.js";
-import { token, clientID } from "secret/discord.json";
+import { token, clientID } from "~secret/discord.json";
 import { Routes } from "discord-api-types/v9";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 export type CommandResult = Promise<Message | Message[] | void> | void;
 

@@ -1,4 +1,4 @@
-import { owner } from "secret/discord.json";
+import { owner } from "~secret/discord.json";
 import { Client, Message, User } from "discord.js";
 
 export default function report(client: Client) {

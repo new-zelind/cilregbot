@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "@discordjs/builders";
+import { MessageEmbed } from "discord.js";
 import Command, { Permissions } from "lib/command";
 
 const AboutCommand = Command({
@@ -18,7 +18,7 @@ const AboutCommand = Command({
   },
 
   async exec(interaction) {
-    const embed = new EmbedBuilder()
+    const embed = new MessageEmbed()
       .setColor(0x3a4958)
       .setTitle(`All about me!`)
       .setDescription("Nice to meet you.")
@@ -50,7 +50,7 @@ const AboutCommand = Command({
         }
       );
 
-    return await interaction.reply({ embeds: [embed.data] });
+    return await interaction.reply({ embeds: [embed] });
   },
 });
 
